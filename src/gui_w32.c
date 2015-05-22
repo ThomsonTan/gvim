@@ -1495,7 +1495,11 @@ gui_mch_init(void)
 #endif
     gui.border_width = 0;
 
-    s_brush = CreateSolidBrush(GetSysColor(COLOR_BTNFACE));
+    // s_brush = CreateSolidBrush(GetSysColor(COLOR_BTNFACE));
+    // After removing toolbar and menu (may be only the height of menu is
+    // not resized? Update the backgroud color for the main window
+    // to be consistent with the background of textArea
+    s_brush = CreateSolidBrush(0x3A3A3A);
 
 #ifdef FEAT_MBYTE
     /* First try using the wide version, so that we can use any title.
