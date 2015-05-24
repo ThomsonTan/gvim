@@ -3156,7 +3156,7 @@ peekchr()
 		    /*
 		     * META contains everything that may be magic sometimes,
 		     * except ^ and $ ("\^" and "\$" are only magic after
-		     * "\v").  We now fetch the next character and toggle its
+		     * "\V").  We now fetch the next character and toggle its
 		     * magicness.  Therefore, \ is so meta-magic that it is
 		     * not in META.
 		     */
