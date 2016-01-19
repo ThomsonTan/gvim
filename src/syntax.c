@@ -2116,12 +2116,15 @@ syn_current_attr(syncing, displaying, can_spell, keep_state)
                                     {
                                         break;
                                     }
-                                    while (isalnum(line[++pCheck]));
+                                    while (isalnum(line[pCheck])
+                                           || line[pCheck] == '_') pCheck++;
                                     funcNameEnd = pCheck - 1;
 
                                     if (line[pCheck] == ':' && line[pCheck+1] == ':')
                                     {
                                         pCheck += 2;
+                                        // destructor
+                                        if (line[pCheck] == '~') pCheck++;
                                         continue;
                                     }
                                     else if (line[pCheck] == ' '
@@ -2129,18 +2132,18 @@ syn_current_attr(syncing, displaying, can_spell, keep_state)
                                              || line[pCheck] == '*'
                                              || line[pCheck] == '&')
                                     {
-                                        // parse past as return type
                                         pCheck++;
-                                        while(line[pCheck] == ' '
-                                              || line[pCheck] == '\t'
-                                              || line[pCheck] == '&'
-                                              || line[pCheck] == '*') pCheck++;
-
-                                        continue;
+                                        while (line[pCheck] == ' '
+                                               || line[pCheck] == '\t'
+                                               || line[pCheck] == '&'
+                                               || line[pCheck] == '*') pCheck++;
+                                        if (line[pCheck] != '(')
+                                        {
+                                            // parse past as return type
+                                            continue;
+                                        }
                                     }
 
-                                    while(line[pCheck] == ' '
-                                          || line[pCheck] == '\t') pCheck++;
                                     if (line[pCheck++] != '(')
                                     {
                                         break;
@@ -2158,6 +2161,7 @@ syn_current_attr(syncing, displaying, can_spell, keep_state)
                                                || line[pCheck] == '>') pCheck++;
                                         if (line[pCheck] != ' '
                                             && line[pCheck] != '\t'
+                                            && line[pCheck] != '&'
                                             && line[pCheck] != '*') // int*
                                         {
                                             break;
