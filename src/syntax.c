@@ -2149,6 +2149,7 @@ syn_current_attr(syncing, displaying, can_spell, keep_state)
                                         break;
                                     }
 
+                                    // TODO: Parse ANSI C parameters?
                                     while(line[pCheck] == ' '
                                           || line[pCheck] == '\t') pCheck++;
                                     if(isalpha(line[pCheck])
@@ -2180,6 +2181,13 @@ syn_current_attr(syncing, displaying, can_spell, keep_state)
                                     else if (line[pCheck] == ')')
                                     {
                                         pCheck++;
+                                    }
+                                    else if (line[pCheck] == '*'
+                                             || line[pCheck] == '&'
+                                             || line[pCheck] == '(')
+                                    {
+                                        // func(&var,...);
+                                        break;
                                     }
 
                                     // check significant trailing comma
