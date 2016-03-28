@@ -4623,7 +4623,7 @@ do_arg_all(count, forceit, keep_tabs)
      * When the ":tab" modifier was used do this for all tab pages.
      */
     if (had_tab > 0)
-	goto_tabpage_tp(first_tabpage, TRUE, TRUE);
+	goto_tabpage_tp(first_tabpage, /*TRUE*/FALSE, /*TRUE*/FALSE);
     for (;;)
     {
 	tpnext = curtab->tp_next;
@@ -4735,7 +4735,7 @@ do_arg_all(count, forceit, keep_tabs)
 	if (!valid_tabpage(tpnext))
 	    tpnext = first_tabpage;	/* start all over...*/
 # endif
-	goto_tabpage_tp(tpnext, TRUE, TRUE);
+	goto_tabpage_tp(tpnext, /*TRUE*/FALSE, /*TRUE*/FALSE);
     }
 
     /*
@@ -4839,13 +4839,13 @@ do_arg_all(count, forceit, keep_tabs)
     if (last_curtab != new_curtab)
     {
 	if (valid_tabpage(last_curtab))
-	    goto_tabpage_tp(last_curtab, TRUE, TRUE);
+	    goto_tabpage_tp(last_curtab, /*TRUE*/FALSE, TRUE);
 	if (win_valid(last_curwin))
 	    win_enter(last_curwin, FALSE);
     }
     /* to window with first arg */
     if (valid_tabpage(new_curtab))
-	goto_tabpage_tp(new_curtab, TRUE, TRUE);
+	goto_tabpage_tp(new_curtab, TRUE, /*TRUE*/FALSE);
     if (win_valid(new_curwin))
 	win_enter(new_curwin, FALSE);
 
