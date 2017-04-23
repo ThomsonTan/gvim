@@ -456,6 +456,7 @@ static int call_func __ARGS((char_u *funcname, int len, typval_T *rettv, int arg
 static void emsg_funcname __ARGS((char *ermsg, char_u *name));
 static int non_zero_arg __ARGS((typval_T *argvars));
 
+static void f_SetForegroundHwnd(typval_T * argvars, typval_T * rettv);
 #ifdef FEAT_FLOAT
 static void f_abs __ARGS((typval_T *argvars, typval_T *rettv));
 static void f_acos __ARGS((typval_T *argvars, typval_T *rettv));
@@ -8044,6 +8045,9 @@ static struct fst
 				/* implementation of function */
 } functions[] =
 {
+    // keep new function in order, so prepend aaa
+    // seems _ is invalid to prepend?
+    {"aaaSetForegroundHwnd", 1, 1, f_SetForegroundHwnd},
 #ifdef FEAT_FLOAT
     {"abs",		1, 1, f_abs},
     {"acos",		1, 1, f_acos},	/* WJMc */
@@ -8880,6 +8884,32 @@ get_float_arg(argvars, f)
     }
     EMSG(_("E808: Number or Float required"));
     return FAIL;
+}
+
+/*
+ * "aaaSetForegroundHwnd(hwnd)" function
+*/
+static void
+f_SetForegroundHwnd(
+    typval_T * argvars,
+    typval_T * rettv)
+{
+    varnumber_T n;
+    int error = FALSE;
+
+    n = get_tv_number_chk(&argvars[0], &error);
+    if (!error)
+    {
+        HWND hwnd = (int) n;
+        ShowWindow(hwnd, SW_RESTORE);
+        SetForegroundWindow(hwnd);
+
+        rettv->vval.v_number = 0;
+    }
+    else
+    {
+        rettv->vval.v_number = -1;
+    }
 }
 
 /*
